@@ -10,28 +10,27 @@ COMING SOON!
 
 ## How to use
 
-First, create the googleAPI root with your Google API Console ID and Secret:
+First, create the googleAPI object (authorization is not yet implemented):
 
 ```js
-var google = require('node-google-api')({
-	clientID: myID,
-	clientSecret: mysecret,
-	
-});
+var google = require('node-google-api');
 ```
 
 Finally, enjoy using all of Google's APIs in Node.js:
 
 ```js
-var calendar = google.calendar();
+var calendar = google.calendar;
 calendar.Events.list({}, function(events) {
-	// Your code here
+	console.log(events);
 });
 ```
 
-For more thorough examples, look at the `examples/` directory.
+For more thorough examples, back later! 
 
-
+## Future Plans
+<ul>
+	<li>Google API tokens/User Authorization support</li>
+	<li>Auto-loading of APIS</li>
 ## License 
 
 (The MIT License)
