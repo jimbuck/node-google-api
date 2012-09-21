@@ -1,9 +1,8 @@
 // psuedo-require while testing (not yet in npm...)
 var gapi = require('./lib/node-google-api');
+var url = require('url');
 
 gapi.list({name:'calendar'}, function(list) {
-	list = JSON.parse(list).items;
-	//
 	if(list)  {
 		switch(list.length) {
 			case 0:
@@ -11,8 +10,16 @@ gapi.list({name:'calendar'}, function(list) {
 				break;
 			case 1:
 				gapi.getRest(list[0], function(api) {
-					api = JSON.parse(api).resources;
-					console.log(api);
+					var path = api.resources.events.methods.list.path+'?key=<<YOUR KEY HERE>>';
+					path = path.replace('{calendarId}',encodeURIComponent('en.usa#holiday@group.v.calendar.google.com'));
+					var eventUrl = url.parse(api.baseUrl + path);
+					
+					gapi.request({
+						host: eventUrl.hostname,
+						path: eventUrl.path,
+						port: eventUrl.port,
+						method: 'GET'
+					}, console.log);
 				});
 				break;
 			default:
@@ -28,3 +35,5 @@ gapi.list({name:'calendar'}, function(list) {
 	}
 	//*/
 });
+
+
