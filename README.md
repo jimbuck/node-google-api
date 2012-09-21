@@ -31,6 +31,8 @@ For more thorough examples, back later!
 <ul>
 	<li>Google API tokens/User Authorization support</li>
 	<li>Auto-loading of APIS</li>
+</ul>
+
 ## License 
 
 (The MIT License)
