@@ -7,6 +7,8 @@ A Node.js module that simplifies the use of every Google API.  API functions are
 ```bash
 COMING SOON!
 ```
+(I will get it on NPM very very soon!!!)
+
 
 ## How to use
 
@@ -16,13 +18,14 @@ First, create the googleAPI object (authorization is not yet implemented):
 var google = require('node-google-api')('<<YOUR GOOGLE API KEY>>');
 ```
 
-Finally, enjoy using all of Google's APIs in Node.js:
+Call `build` to create the api directly from Google:
 
 ```js
 google.build(function(api) {
-	var calendar = api.calendar;
-	calendar.Events.list(function(events) {
-		console.log(events);
+	api.calendar.events.list(function(events) {
+		for(var e in events.items) {
+			console.log(events[e].summary);
+		}
 	});
 }
 ```

@@ -13,5 +13,4 @@ apiLib.build(function(gapi) {
 				console.log(eventList.items[e].summary + ': '+eventList.items[e].start.date);
 		}
 	});
-	
 });
