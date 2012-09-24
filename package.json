@@ -2,6 +2,13 @@
 , "description" : "Simple but dynamic wrapper for RESTful Google APIs."
 , "tags" : ["google", "api", "simple", "request"]
 , "version" : "0.1.0"
+,"keywords": [
+      "google",
+      "api",
+      "simple",
+	  "rest",
+	  "request"
+    ]
 , "author" : "Jim Buck <jim@jimmyboh.com>"
 , "repository" :
   { "type" : "git"
