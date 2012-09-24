@@ -13,24 +13,27 @@ COMING SOON!
 First, create the googleAPI object (authorization is not yet implemented):
 
 ```js
-var google = require('node-google-api');
+var google = require('node-google-api')('<<YOUR GOOGLE API KEY>>');
 ```
 
 Finally, enjoy using all of Google's APIs in Node.js:
 
 ```js
-var calendar = google.calendar;
-calendar.Events.list({}, function(events) {
-	console.log(events);
-});
+google.build(function(api) {
+	var calendar = api.calendar;
+	calendar.Events.list(function(events) {
+		console.log(events);
+	});
+}
 ```
 
-For more thorough examples, back later! 
+For more thorough examples, check back later! 
 
 ## Future Plans
 <ul>
-	<li>Google API tokens/User Authorization support</li>
+	<li>User Authorization support</li>
 	<li>Auto-loading of APIS</li>
+	<li><b>PLEASE SUGGEST MORE!</b></li>
 </ul>
 
 ## License 
