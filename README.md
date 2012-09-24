@@ -1,6 +1,6 @@
 # node-google-api
 
-A Node.js module that simplifies the use of every Google API.  API functions are formed through the Google APIs Discovery Service.
+A Node.js module that simplifies the use of RESTful Google APIs.  API functions are formed through the Google APIs Discovery Service, so they are automagically up to date.
 
 ## How to Install
 
@@ -12,17 +12,15 @@ COMING SOON!
 
 ## How to use
 
-First, create the googleAPI object (authorization is not yet implemented):
+Calling `build` will generate either one or all of the APIs, returning one object that contains each API. Then just use the APIs according to their documention!
 
 ```js
 var google = require('node-google-api')('<<YOUR GOOGLE API KEY>>');
-```
 
-Call `build` to create the api directly from Google:
-
-```js
 google.build(function(api) {
-	api.calendar.events.list(function(events) {
+	api.calendar.events.list({
+		calendarId: 'en.usa#holiday@group.v.calendar.google.com'
+	}, function(events) {
 		for(var e in events.items) {
 			console.log(events[e].summary);
 		}
@@ -34,9 +32,9 @@ For more thorough examples, check back later!
 
 ## Future Plans
 <ul>
+	<li>More flexible API loading</li>
 	<li>User Authorization support</li>
-	<li>Auto-loading of APIS</li>
-	<li><b>PLEASE SUGGEST MORE!</b></li>
+	<li>Auto-loading of APIs</li>
 </ul>
 
 ## License 
