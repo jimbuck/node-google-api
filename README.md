@@ -5,9 +5,9 @@ A Node.js module that simplifies the use of RESTful Google APIs.  API functions 
 ## How to Install
 
 ```bash
-COMING SOON!
+npm install node-google-api
 ```
-(I will get it on NPM very very soon!!!)
+
 
 
 ## How to use
