@@ -18,14 +18,14 @@ Calling `build` will generate either one or all of the APIs, returning one objec
 var google = require('node-google-api')('<<YOUR GOOGLE API KEY>>');
 
 google.build(function(api) {
-	api.calendar.events.list({
-		calendarId: 'en.usa#holiday@group.v.calendar.google.com'
-	}, function(events) {
-		for(var e in events.items) {
-			console.log(events[e].summary);
-		}
-	});
-}
+    api.calendar.events.list({
+        calendarId: 'en.usa#holiday@group.v.calendar.google.com'
+    }, function(events) {
+        for(var e in events.items) {
+            console.log(events.items[e].summary);
+        }
+    });
+});
 ```
 
 For more thorough examples, check back later! 
