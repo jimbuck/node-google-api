@@ -77,30 +77,33 @@ var buildAPI = function(apiList, callback) {
 					}
 					
 					// Make the method a useable function...
-					apiObj[restAPI.name][resource][method] = function (options, cb) {
-						//console.log(method + ' ' + resource + ' from ' + restAPI.name);
-						var query = '?key='+ apiKey;
-						// Insert the URL variables...
-						var path = this[method].vars.path;
-						for(var term in options) {
-							if(path.indexOf(term) >= 0) {
-								path = path.replace('{'+term+'}', encodeURIComponent(options[term]));
-							} else {
-								query += '&' + term + '=' + encodeURIComponent(options[term]);
-							}
-						}
-						var parsedUrl = url.parse(hostURL + path + query);
-						
-						sendRequest({
-							host: parsedUrl.hostname,
-							path: parsedUrl.path,
-							port: parsedUrl.port,
-							method: this[method].vars.httpMethod
-						}, function(data) {
-							var result = JSON.parse(data);
-							cb(result);
-						});
-					}
+					apiObj[restAPI.name][resource][method] = (function() {
+            var thisMethod = method;
+            return function (options, cb) {
+              //console.log(thisMethod + ' ' + resource + ' from ' + restAPI.name);
+              var query = '?key='+ apiKey;
+              // Insert the URL variables...
+              var path = this[thisMethod].vars.path;
+              for(var term in options) {
+                if(path.indexOf(term) >= 0) {
+                  path = path.replace('{'+term+'}', encodeURIComponent(options[term]));
+                } else {
+                  query += '&' + term + '=' + encodeURIComponent(options[term]);
+                }
+              }
+              var parsedUrl = url.parse(hostURL + path + query);
+              
+              sendRequest({
+                host: parsedUrl.hostname,
+                path: parsedUrl.path,
+                port: parsedUrl.port,
+                method: this[thisMethod].vars.httpMethod
+              }, function(data) {
+                var result = JSON.parse(data);
+                cb(result);
+              });
+            }
+          })();
 					apiObj[restAPI.name][resource][method].vars = restAPI.resources[resource].methods[method];
 				}
 			}
