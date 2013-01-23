@@ -66,15 +66,15 @@ var buildAPI = function(apiList, callback) {
 			apiObj[restAPI.name] = {};
 			// For each item in the API...
 			for(var resource in restAPI.resources) {
-				if(restAPI.name=='calasdfasdfendar') {
-					console.log('  '+resource+':');
-				}
+				//if(restAPI.name=='calasdfasdfendar') {
+				//	console.log('  '+resource+':');
+				//}
 				apiObj[restAPI.name][resource] = {};
 				// For each method in the item...
 				for(var method in restAPI.resources[resource].methods) {
-					if(restAPI.name=='asdfas') {
-						console.log('    ' + method+':');
-					}
+					//if(restAPI.name=='asdfas') {
+					//	console.log('    ' + method+':');
+					//}
 					
 					// Make the method a useable function...
 					apiObj[restAPI.name][resource][method] = (function() {
