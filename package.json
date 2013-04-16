@@ -1,7 +1,7 @@
 { "name" : "node-google-api"
 , "description" : "Simple but dynamic wrapper for RESTful Google APIs."
 , "tags" : ["google", "api", "simple", "request"]
-, "version" : "0.1.0"
+, "version" : "0.1.1"
 ,"keywords": [
       "google",
       "api",

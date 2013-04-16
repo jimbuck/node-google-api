@@ -53,6 +53,7 @@ module.exports = function(key) {
 	};
 }
 
+// TODO: buildAPI is a big ugly method, I will break this down to organize and improve.
 var buildAPI = function(apiList, callback) {
 	var remaining = apiList.length;
 	var apiObj = {};
@@ -105,6 +106,7 @@ var buildAPI = function(apiList, callback) {
             }
           })();
 					apiObj[restAPI.name][resource][method].vars = restAPI.resources[resource].methods[method];
+					//apiObj[restAPI.name][resource][method].query = restAPI.resources[resource].methods[method].parameters;
 				}
 			}
 			
