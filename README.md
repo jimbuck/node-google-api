@@ -14,21 +14,37 @@ npm install node-google-api
 
 Calling `build` will generate either one or all of the APIs, returning one object that contains each API. Then just use the APIs according to their documention!
 
-```js
-var google = require('node-google-api')('<<YOUR GOOGLE API KEY>>');
 
-google.build(function(api) {
-    api.calendar.events.list({
-        calendarId: 'en.usa#holiday@group.v.calendar.google.com'
-    }, function(events) {
-        for(var e in events.items) {
+    var google = require('node-google-api')('<<YOUR GOOGLE API KEY>>');
+    
+    google.build(function(api) {
+      api.calendar.events.list(
+        { calendarId: 'en.usa#holiday@group.v.calendar.google.com' },
+        function(events) {
+          for(var e in events.items) {
             console.log(events.items[e].summary);
+          }
         }
+      });
     });
-});
-```
 
-For more thorough examples, check back later! 
+If you need to pass additional data, such as an **OAuth token**, simply add the hash to the data for the method, like below:
+
+    var google = require('node-google-api')('<<YOUR GOOGLE API KEY>>');
+    
+    google.build(function(api) {
+      api.calendar.events.list(
+        {
+          calendarId: 'en.usa#holiday@group.v.calendar.google.com',
+          access_token: '1/fFBGRNJru1FQd44AzqT3Zg', // Token for the current user
+        },
+        function(events) {
+          for(var e in events.items) {
+            console.log(events.items[e].summary);
+          }
+        }
+      });
+    });
 
 ## Future Plans
 <ul>
@@ -41,7 +57,7 @@ For more thorough examples, check back later!
 
 (The MIT License)
 
-Copyright (c) 2013 Jim Buck &lt;jim@jimmyboh.com&gt;
+Copyright (c) 2013 Jim Buck &lt;jim@jimmyboh.com&gt; and node-google-api contributors
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
