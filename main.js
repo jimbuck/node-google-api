@@ -81,6 +81,11 @@ var buildAPI = function(apiList, callback) {
 					apiObj[restAPI.name][resource][method] = (function() {
             var thisMethod = method;
             return function (options, cb) {
+              if(typeof cb == 'undefined'){
+                cb = options;
+                options = {};
+							}
+              
               //console.log(thisMethod + ' ' + resource + ' from ' + restAPI.name);
               var query = '?key='+ apiKey;
               // Insert the URL variables...
@@ -101,7 +106,7 @@ var buildAPI = function(apiList, callback) {
                 method: this[thisMethod].vars.httpMethod
               }, function(data) {
                 var result = JSON.parse(data);
-                cb(result);
+                if(cb) cb(result);
               });
             }
           })();
@@ -176,3 +181,17 @@ function sendRequest(options, callback) {
 		});
 	}).end();
 }
+
+
+var google = require('node-google-api')('<<YOUR GOOGLE API KEY>>');
+
+google.build(function(api) {
+    api.calendar.events.list({
+        access_token: '1/fFBGRNJru1FQd44AzqT3Zg', // Token for the current user (put it as session data)
+        calendarId: 'en.usa#holiday@group.v.calendar.google.com'
+    }, function(events) {
+        for(var e in events.items) {
+            console.log(events.items[e].summary);
+        }
+    });
+});
