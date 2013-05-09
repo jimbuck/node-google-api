@@ -14,7 +14,6 @@ npm install node-google-api
 
 Calling `build` will generate either one or all of the APIs, returning one object that contains each API. Then just use the APIs according to their documention!
 
-
     var google = require('node-google-api')('<<YOUR GOOGLE API KEY>>');
     
     google.build(function(api) {
@@ -28,7 +27,7 @@ Calling `build` will generate either one or all of the APIs, returning one objec
       });
     });
 
-If you need to pass additional data, such as an **OAuth token**, simply add the hash to the data for the method, like below:
+If you need to pass additional data, such as an **OAuth token**, simply add the hash to the data for the method, shown here:
 
     var google = require('node-google-api')('<<YOUR GOOGLE API KEY>>');
     
@@ -48,9 +47,7 @@ If you need to pass additional data, such as an **OAuth token**, simply add the 
 
 ## Future Plans
 <ul>
-	<li>More flexible API loading</li>
-	<li>User Authorization support</li>
-	<li>Auto-loading of APIs</li>
+	<li>Create an issue for enhancements!</li>
 </ul>
 
 ## License 
