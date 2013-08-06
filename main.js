@@ -28,18 +28,6 @@ module.exports = function(key) {
 				options = {};
 			}
 			listAPIs(options, function(apiList) {
-				// var obj = {};
-				// for(li in apiList) {
-					// obj[apiList[li].name] = {version: apiList[li].version,discoveryRestUrl:apiList[li].discoveryRestUrl};
-				// }
-				
-				// // Add the list and get functions, for custom handling.
-			    // obj.listAPIs = listAPIs;
-			    // obj.getAPI = getRest;
-				// obj.request = sendRequest;
-				
-				// callback(obj);
-
 				buildAPI(apiList, function(apiObj) {
 					// Add the list and get functions, for custom handling.
 					apiObj.listAPIs = listAPIs;
@@ -129,7 +117,7 @@ function listAPIs(options, callback) {
 		options = {};
 	}
 	
-	var query = '?fields=items(discoveryRestUrl%2Cname%2Cversion)';//&key='+apiKey;
+	var query = '?fields=items(discoveryRestUrl%2Cname%2Cversion)';
 	if(options) {
 		for(var o in options) {
 			if(options[o]) {
