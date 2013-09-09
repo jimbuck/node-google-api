@@ -1,20 +1,22 @@
-{ "name" : "node-google-api"
-, "description" : "Simple but dynamic wrapper for RESTful Google APIs."
-, "tags" : ["google", "api", "simple", "request"]
-, "version" : "0.1.1"
-,"keywords": [
-      "google",
-      "api",
-      "simple",
-	  "rest",
-	  "request"
-    ]
-, "author" : "Jim Buck <jim@jimmyboh.com>"
-, "repository" :
-  { "type" : "git"
-  , "url" : "http://github.com/JimmyBoh/node-google-api.git"
-  }
-, "bugs" :
-  { "url" : "http://github.com/JimmyBoh/node-google-api/issues" }
-, "main" : "./main"
+{
+	"name" : "node-google-api",
+	"description" : "Simple but dynamic wrapper for RESTful Google APIs.",
+	"tags" : ["google", "api", "simple", "request"],
+	"version" : "0.2.0",
+	"keywords" : [
+		"google",
+		"api",
+		"simple",
+		"rest",
+		"request"
+	],
+	"author" : "Jim Buck <jim@jimmyboh.com>",
+	"repository" : {
+		"type" : "git",
+		"url" : "http://github.com/JimmyBoh/node-google-api.git"
+	},
+	"bugs" : {
+		"url" : "http://github.com/JimmyBoh/node-google-api/issues"
+	},
+	"main" : "./main"
 }

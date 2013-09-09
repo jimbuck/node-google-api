@@ -1,15 +1,11 @@
 var https = require('https');
-var zlib = require('zlib');
 var url = require('url');
 
-var googleApiHostUrl = 'www.googleapis.com'
-var apiKey = null;
-
-// Currently not working...
-var gzipHeader = {
-	"Accept-Encoding": "gzip",
-	"User-Agent": "nodejs (gzip)"
-}
+var googleApiHostUrl = 'www.googleapis.com';
+var settings = {
+  apiKey: null,
+  debugMode: false
+};
 
 /****************
  * node-google-api
@@ -17,9 +13,19 @@ var gzipHeader = {
 
 module.exports = function(key) {
 	
-	if(key) {
-		apiKey = key;
-	}
+	if(key){
+  
+    if(typeof key === 'string'){
+      settings.apiKey = key;
+    } else if(typeof key === 'object') {
+      settings.apiKey = key.apiKey || '';
+      settings.debugMode = key.debugMode || false;
+    } else {
+      throw new Error('A parameter of type "' + typeof key + '" is not permitted.');
+    }
+	} else {
+    throw new Error('An API key is required to use this module: https://code.google.com/apis/console');
+  }
 	
 	return {
 		build: function(options, callback) {
@@ -48,34 +54,31 @@ var buildAPI = function(apiList, callback) {
 	
 	for(var api in apiList) {
 		getRest(apiList[api], function(restAPI) {
-			if(restAPI.name=='calasdfasdfendar') {
-				console.log('Building '+restAPI.name+'...');
-			}
 			var hostURL = restAPI.baseUrl;
 			apiObj[restAPI.name] = {};
 			// For each item in the API...
 			for(var resource in restAPI.resources) {
-				//if(restAPI.name=='calasdfasdfendar') {
-				//	console.log('  '+resource+':');
-				//}
+
 				apiObj[restAPI.name][resource] = {};
 				// For each method in the item...
 				for(var method in restAPI.resources[resource].methods) {
-					//if(restAPI.name=='asdfas') {
-					//	console.log('    ' + method+':');
-					//}
 					
-					// Make the method a useable function...
+					// Make the method a usable function...
 					apiObj[restAPI.name][resource][method] = (function() {
             var thisMethod = method;
             return function (options, cb) {
-              if(typeof cb == 'undefined'){
-                cb = options;
+              if(!options)
                 options = {};
+              
+              if(typeof cb == 'undefined'){
+                cb = function(){};
+                if(typeof options === 'function') {
+                  cb = options;
+                  options = {};
+                }
 							}
               
-              //console.log(thisMethod + ' ' + resource + ' from ' + restAPI.name);
-              var query = '?key='+ apiKey;
+              var query = '?key='+ settings.apiKey;
               // Insert the URL variables...
               var path = this[thisMethod].vars.path;
               for(var term in options) {
@@ -93,13 +96,11 @@ var buildAPI = function(apiList, callback) {
                 port: parsedUrl.port,
                 method: this[thisMethod].vars.httpMethod
               }, function(data) {
-                var result = JSON.parse(data);
-                if(cb) cb(result);
+                if(cb) cb(data);
               });
             }
           })();
 					apiObj[restAPI.name][resource][method].vars = restAPI.resources[resource].methods[method];
-					//apiObj[restAPI.name][resource][method].query = restAPI.resources[resource].methods[method].parameters;
 				}
 			}
 			
@@ -110,8 +111,7 @@ var buildAPI = function(apiList, callback) {
 	}
 }
 
-module.exports.list = listAPIs;
-function listAPIs(options, callback) {
+module.exports.list = listAPIs = function (options, callback) {
 	if(typeof options == 'function') {
 		callback = options;
 		options = {};
@@ -131,13 +131,13 @@ function listAPIs(options, callback) {
 		path: '/discovery/v1/apis'+query,
 		method: 'GET'
 	}, function(data) {
-		var list = JSON.parse(data).items;
-		callback(list);
+      if(data.items) {
+        callback(data.items);
+      }
 	});
 }
 
-module.exports.getAPI = getRest
-function getRest(discoveryItem, callback) {
+module.exports.getAPI = getRest = function(discoveryItem, callback) {
 	// baseUrl, resources/*/methods/*/path, resources/*/methods/*/httpMethod
 	var query = '?fields=name%2CbaseUrl%2C+resources%2F*%2Fmethods%2F*%2Fpath%2C+resources%2F*%2Fmethods%2F*%2FhttpMethod';
 	var apiURL = url.parse(discoveryItem.discoveryRestUrl + query);
@@ -148,38 +148,37 @@ function getRest(discoveryItem, callback) {
 		port: apiURL.port,
 		method: 'GET'
 	}, function(data) {
-		var obj = JSON.parse(data);
-		callback(obj);
+		callback(data);
 	});
 }
-		
+
 // Make the Request function externally available for easier testing...
-module.exports.request = sendRequest;
-function sendRequest(options, callback) {                                           
+module.exports.request = sendRequest = function (options, callback) {                                           
 	https.request(options, function(res) {
 		res.setEncoding('utf8');
 		
-		var data = '';
+		var result = '';
 		res.on('data', function (chunk) {
-			data += chunk;
+			result += chunk;
 		}).on('end', function () {
-			if(callback) {
-				return callback(data);
-			}
+			var data = JSON.parse(result);
+      
+      if(data.error && settings.debugMode){
+        throwResponseException(data);
+      }
+      
+      if(callback) callback(data);
 		});
 	}).end();
 }
 
-
-var google = require('node-google-api')('<<YOUR GOOGLE API KEY>>');
-
-google.build(function(api) {
-    api.calendar.events.list({
-        access_token: '1/fFBGRNJru1FQd44AzqT3Zg', // Token for the current user (put it as session data)
-        calendarId: 'en.usa#holiday@group.v.calendar.google.com'
-    }, function(events) {
-        for(var e in events.items) {
-            console.log(events.items[e].summary);
-        }
-    });
-});
+function throwResponseException(errorResult){
+  var errorMessage = errorResult.error.code + ': ' + errorResult.error.message;
+  var stackTrace = '';
+  for(var e in errorResult.error.errors){
+    var error = errorResult.error.errors[e];
+    stackTrace += '[' + error.domain + '] ' + error.reason + ' -> ' + error.message + '\n';
+  }
+  
+  throw new Error(errorMessage + '\n' + stackTrace);
+}

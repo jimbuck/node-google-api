@@ -12,16 +12,29 @@ npm install node-google-api
 
 ## How to use
 
-Calling `build` will generate either one or all of the APIs, returning one object that contains each API. Then just use the APIs according to their documention!
+There are two "constructors" for the `google` object. The first and easiest is to pass your private API key as a string, but you cna also use an object hash to specify more options (shown below).
 
     var google = require('node-google-api')('<<YOUR GOOGLE API KEY>>');
     
+or
+    
+    var google = require('node-google-api')({
+        apiKey: '<<YOUR GOOGLE API KEY>>',
+        debugMode: true // Throws errors instead of passing them silently.
+    });
+
+
+Calling `build` will build all of the APIs, returning one object that contains each API. Then just use the APIs according to their documentation!
+
     google.build(function(api) {
-      api.calendar.events.list(
-        { calendarId: 'en.usa#holiday@group.v.calendar.google.com' },
-        function(events) {
-          for(var e in events.items) {
-            console.log(events.items[e].summary);
+      api.calendar.events.list({
+        calendarid: 'en.usa#holiday@group.v.calendar.google.com'
+      }, function(result) {
+        if(result.error){
+          console.log(result.error);
+        } else {
+          for(var i in result.items) {
+            console.log(result.items[i].summary);
           }
         }
       });
@@ -29,8 +42,6 @@ Calling `build` will generate either one or all of the APIs, returning one objec
 
 If you need to pass additional data, such as an **OAuth token**, simply add the hash to the data for the method, shown here:
 
-    var google = require('node-google-api')('<<YOUR GOOGLE API KEY>>');
-    
     google.build(function(api) {
       api.calendar.events.list(
         {
