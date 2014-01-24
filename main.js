@@ -1,8 +1,9 @@
 var https = require('https');
 var url = require('url');
 
-var googleApiHostUrl = 'www.googleapis.com';
 var settings = {
+  googleApiHostUrl: 'www.googleapis.com',
+  googleDisoveryApiVersion: 'v1',
   apiKey: null,
   debugMode: false
 };
@@ -18,8 +19,10 @@ module.exports = function(key) {
     if(typeof key === 'string'){
       settings.apiKey = key;
     } else if(typeof key === 'object') {
-      settings.apiKey = key.apiKey || '';
-      settings.debugMode = key.debugMode || false;
+      settings.apiKey = key.apiKey || settings.apiKey;
+      settings.debugMode = key.debugMode || settings.debugMode;
+      settings.googleApiHostUrl = key.googleApiHostUrl || settings.googleApiHostUrl;
+      settings.googleDisoveryApiVersion = key.googleDisoveryApiVersion || settings.googleDisoveryApiVersion;
     } else {
       throw new Error('A parameter of type "' + typeof key + '" is not permitted.');
     }
@@ -35,10 +38,10 @@ module.exports = function(key) {
 			}
 			listAPIs(options, function(apiList) {
 				buildAPI(apiList, function(apiObj) {
-					// Add the list and get functions, for custom handling.
-					apiObj.listAPIs = listAPIs;
-					apiObj.getAPI = getRest;
-					apiObj.request = sendRequest;
+					// Removed them, they were confusing to see in the list of API's.
+					//apiObj.listAPIs = listAPIs;
+					//apiObj.getAPI = getRest;
+					//apiObj.request = sendRequest;
 					
 					callback(apiObj);
 				});
@@ -127,8 +130,8 @@ module.exports.list = listAPIs = function (options, callback) {
 	}
 
 	sendRequest({
-		host: googleApiHostUrl,
-		path: '/discovery/v1/apis'+query,
+		host: settings.googleApiHostUrl,
+		path: '/discovery/' + settings.googleDisoveryApiVersion + '/apis'+query,
 		method: 'GET'
 	}, function(data) {
       if(data.items) {
@@ -156,7 +159,7 @@ module.exports.getAPI = getRest = function(discoveryItem, callback) {
 module.exports.request = sendRequest = function (options, callback) {                                           
 	https.request(options, function(res) {
 		res.setEncoding('utf8');
-		
+		//console.log(options.host + options.path);
 		var result = '';
 		res.on('data', function (chunk) {
 			result += chunk;

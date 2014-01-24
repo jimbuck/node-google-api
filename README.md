@@ -40,13 +40,24 @@ Calling `build` will build all of the APIs, returning one object that contains e
       });
     });
 
+
+
+Need a list of all API's exposed? That's easy! Just run this little snippet:
+
+
+    google.build(function(api) {
+      for(var k in api){
+        console.log(k);
+      }
+    });
+
 If you need to pass additional data, such as an **OAuth token**, simply add the hash to the data for the method, shown here:
 
     google.build(function(api) {
       api.calendar.events.list(
         {
           calendarId: 'en.usa#holiday@group.v.calendar.google.com',
-          access_token: '1/fFBGRNJru1FQd44AzqT3Zg', // Token for the current user
+          access_token: user.token, // You have to supply the OAuth token for the current user
         },
         function(events) {
           for(var e in events.items) {

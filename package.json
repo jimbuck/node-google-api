@@ -1,14 +1,15 @@
 {
 	"name" : "node-google-api",
 	"description" : "Simple but dynamic wrapper for RESTful Google APIs.",
-	"tags" : ["google", "api", "simple", "request"],
-	"version" : "0.2.0",
+	"tags" : ["google", "api", "simple", "request", "rest", "http", "oauth"],
+	"version" : "0.3.0",
 	"keywords" : [
 		"google",
 		"api",
 		"simple",
 		"rest",
-		"request"
+		"request",
+    "oauth"
 	],
 	"author" : "Jim Buck <jim@jimmyboh.com>",
 	"repository" : {
