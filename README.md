@@ -2,6 +2,8 @@
 
 A Node.js module that simplifies the use of RESTful Google APIs.  API functions are formed through the Google APIs Discovery Service, so they are automagically up to date.
 
+![NPM Status Image](https://nodei.co/npm/node-google-api.png?downloads=1)
+
 ## How to Install
 
 ```bash
@@ -15,9 +17,9 @@ npm install node-google-api
 There are two "constructors" for the `google` object. The first and easiest is to pass your private API key as a string, but you cna also use an object hash to specify more options (shown below).
 
     var google = require('node-google-api')('<<YOUR GOOGLE API KEY>>');
-    
+
 or
-    
+
     var google = require('node-google-api')({
         apiKey: '<<YOUR GOOGLE API KEY>>',
         debugMode: true // Throws errors instead of passing them silently.
@@ -72,7 +74,7 @@ If you need to pass additional data, such as an **OAuth token**, simply add the 
 	<li>Create an issue for enhancements!</li>
 </ul>
 
-## License 
+## License
 
 (The MIT License)
 
