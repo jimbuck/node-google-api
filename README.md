@@ -6,79 +6,91 @@ A Node.js module that simplifies the use of RESTful Google APIs.  API functions 
 
 ## How to Install
 
-```bash
+```sh
 npm install node-google-api
 ```
-
-
 
 ## How to use
 
 There are two "constructors" for the `google` object. The first and easiest is to pass your private API key as a string, but you cna also use an object hash to specify more options (shown below).
 
-    var google = require('node-google-api')('<<YOUR GOOGLE API KEY>>');
+```js
+var google = require('node-google-api')('<<YOUR GOOGLE API KEY>>');
+```
 
 or
 
-    var google = require('node-google-api')({
-        apiKey: '<<YOUR GOOGLE API KEY>>',
-        debugMode: true // Throws errors instead of passing them silently.
-    });
+```js
+var google = require('node-google-api')({
+    apiKey: '<<YOUR GOOGLE API KEY>>',
+    debugMode: true // Throws errors instead of passing them silently.
+});
+```
 
 
 Calling `build` will build all of the APIs, returning one object that contains each API. Then just use the APIs according to their documentation!
 
-    google.build(function(api) {
-      api.calendar.events.list({
-        calendarid: 'en.usa#holiday@group.v.calendar.google.com'
-      }, function(result) {
-        if(result.error){
-          console.log(result.error);
-        } else {
-          for(var i in result.items) {
-            console.log(result.items[i].summary);
-          }
-        }
-      });
-    });
+```js
+google.build(function(api) {
+  api.calendar.events.list({
+    calendarid: 'en.usa#holiday@group.v.calendar.google.com'
+  }, function(result) {
+    if(result.error){
+      console.log(result.error);
+    } else {
+      for(var i in result.items) {
+        console.log(result.items[i].summary);
+      }
+    }
+  });
+});
+```
 
 
 
 Need a list of all API's exposed? That's easy! Just run this little snippet:
 
-
-    google.build(function(api) {
-      for(var k in api){
-        console.log(k);
-      }
-    });
+```js
+google.build(function(api) {
+  for(var k in api){
+    console.log(k);
+  }
+});
+```
 
 If you need to pass additional data, such as an **OAuth token**, simply add the hash to the data for the method, shown here:
 
-    google.build(function(api) {
-      api.calendar.events.list(
-        {
-          calendarId: 'en.usa#holiday@group.v.calendar.google.com',
-          access_token: user.token, // You have to supply the OAuth token for the current user
-        },
-        function(events) {
-          for(var e in events.items) {
-            console.log(events.items[e].summary);
-          }
-        }
-      });
-    });
+```js
+google.build(function(api) {
+  api.calendar.events.list(
+    {
+      calendarId: 'en.usa#holiday@group.v.calendar.google.com',
+      access_token: user.token, // You have to supply the OAuth token for the current user
+    },
+    function(events) {
+      for(var e in events.items) {
+        console.log(events.items[e].summary);
+      }
+    }
+  });
+});
+```
 
 ## Future Plans
-<ul>
-	<li>Create an issue for enhancements!</li>
-</ul>
+
+ - Create an issue for enhancements!
+
+## Donating
+
+Help fund this project by donating, or just buy me a beer!
+
+[![Support via Gratipay](https://cdn.rawgit.com/gratipay/gratipay-badge/2.3.0/dist/gratipay.svg)](https://gratipay.com/JimmyBoh/)
 
 ## License
 
 (The MIT License)
 
-Copyright (c) 2013 Jim Buck &lt;jim@jimmyboh.com&gt; and node-google-api contributors
+Copyright (c) 2013-2015 Jim Buck <jim@jimmyboh.com> and node-google-api contributors
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
