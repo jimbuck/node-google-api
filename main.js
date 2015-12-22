@@ -158,7 +158,8 @@ module.exports.getAPI = getRest = function(discoveryItem, callback) {
 // Make the Request function externally available for easier testing...
 module.exports.request = sendRequest = function (options, callback) {                                           
 	https.request(options, function(res) {
-		res.setEncoding('utf8');
+		if(res.setEncoding)
+			res.setEncoding('utf8');
 		//console.log(options.host + options.path);
 		var result = '';
 		res.on('data', function (chunk) {
