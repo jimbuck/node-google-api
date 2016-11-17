@@ -141,8 +141,14 @@ module.exports.list = listAPIs = function (options, callback) {
 }
 
 module.exports.getAPI = getRest = function(discoveryItem, callback) {
-	// baseUrl, resources/*/methods/*/path, resources/*/methods/*/httpMethod
-	var query = '?fields=name%2CbaseUrl%2C+resources%2F*%2Fmethods%2F*%2Fpath%2C+resources%2F*%2Fmethods%2F*%2FhttpMethod';
+	var query = "";
+  	if (discoveryItem.discoveryRestUrl.indexOf("/discovery/v1/apis") > -1) {
+    		// baseUrl, resources/*/methods/*/path, resources/*/methods/*/httpMethod
+  		query = '?fields=name%2CbaseUrl%2C+resources%2F*%2Fmethods%2F*%2Fpath%2C+resources%2F*%2Fmethods%2F*%2FhttpMethod';
+  	} else if (discoveryItem.discoveryRestUrl.indexOf("$discovery/rest?version") > -1) {
+    		// fields["name"],fields["baseUrl"],fields["resources"]'
+    		query = '&fields=fields[%22name%22],fields[%22baseUrl%22],fields[%22resources%22]';
+  	}
 	var apiURL = url.parse(discoveryItem.discoveryRestUrl + query);
 	
 	sendRequest({
